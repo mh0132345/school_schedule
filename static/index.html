@@ -1,192 +1,86 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	  <meta charset="UTF-8">
+	 	<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="style.css">
+
 	</head>
 
-	<div>
-		<h1> List of the courses: </h1>
-		<select id="courses"></select>
-	</div>
-	<h2> Add a new courses here. You will need to choose a curriculums below. </h2>
-	<form id="add_course">
-		Course Code: <input type="text" id="course_code"><br/>
-		Course Name: <input type="text" id="course_name"><br/>
-		Course Credit: <input type="number" id="course_credit"><br/>
-		Course Curriculums: <select id="course_curriculums"></select><br/>
-		<button type="button" onClick="addCourse()">Add Course</button><br>
-	</form>
+	<body>
+	<div class="container">
+		<div class="jumbotron">
+			<h1> SCHOOL SCHEDULE </h1>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">Home</a></li>
+			<li><a href="#">List all data</a></li>
+			<li><a href="#">Add new data</a></li>
+			<li><a href="#">Search infoss</a></li>
+		</ul>
 
-	<div>
-		<h1> List of the groups: </h1>
-		<select id="groups"></select>
-	</div>
-	<div>
-		<h1> List of the degree program: </h1>
-		<select id="degree"></select>
-	</div>
-	<h2> Add a new group. Also add new degreeprogram below. </h2>
-	<form id="add_group">
-		Group Code: <input type="text" id="group_code"><br/>
-		Group Degree Program: <input type="text" id="group_degree"><br/>
-		<button type="button" onClick="addGroup()">Add Group</button><br>
-	</form>
+		<div class="row">
+			<div class="panel panel-info col-lg-6">
+				<h1 class="panel-heading"> List of the courses: </h1>
+				<select class="form-control" id="courses"></select>
+			</div>
+			<div class="panel panel-info  col-lg-6">
+				<h1 class="panel-heading"> List of the groups: </h1>
+				<select class="form-control" id="groups"></select>
+			</div>
+		</div>
 
-	<div>
-		<h1> List of the curriculums: </h1>
-		<select id="curriculums"></select>
-	</div>
-	<h2> Add new curriculum for a group. You need to choose the group below. </h2>
-	<form id="add_group">
-		Group: <select id="curriculum_group"></select><br/>
-		<button type="button" onClick="addCurriculum()">Add Group</button><br>
-	</form>
-	<script>
+		<div class="row">
+			<div class="panel panel-info col-lg-6">
+				<h1 class="panel-heading"> List of the degree program: </h1>
+				<select class="form-control" id="degree"></select>
+			</div>
+			<div class="panel panel-info col-lg-6">
+				<h1 class="panel-heading"> List of the curriculums: </h1>
+				<select class="form-control" id="curriculums"></select>
+			</div>
+		</div>
 
-	//Display all lecture->courses
-	function displayCourses(){
-		let request = new XMLHttpRequest();
-		request.open("GET", "http://127.0.0.1:8000/courses/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send();
-		allCourses = JSON.parse(request.responseText);
-		console.log(allCourses);
-		let selectElement = document.getElementById("courses");
-		let i, options="";
-		for(i = 0; i < allCourses.length; i++)
-			options = options + "<option>" + allCourses[i].name + "/" + allCourses[i].code + "</option>";
-		selectElement.innerHTML = options;
-	}
+		<div class="row">
+			<div class="panel panel-info">
+				<h2 class="panel-heading "> Add a new courses here. You will need to choose a curriculums below. </h2>
+				<form class="form-group panel-body" id="add_course">
+					<label>Course Code:</label>
+					<input class="form-control" type="text" id="course_code"><br/>
+					<label>Course Name:</label>
+					<input class="form-control" type="text" id="course_name"><br/>
+					<label>Course Credit:</label>
+					<input class="form-control" type="number" id="course_credit"><br/>
+					<label> Course Curriculums:</label>
+					<select class="form-control" id="course_curriculums"></select><br/>
+					<button class="btn btn-success" type="button" onClick="addCourse()">Add Course</button><br>
+				</form>
+			</div>
+		</div>
 
-	//Display all the group in groupstudys
-	function displayGroup(){
-		let request = new XMLHttpRequest();
-		request.open("GET", "http://127.0.0.1:8000/groupstudys/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send();
-		allGroup = JSON.parse(request.responseText);
-		console.log(allGroup);
-		let group = document.getElementById("groups");
-		let degree = document.getElementById("degree");
-		let curriculum_group = document.getElementById("curriculum_group");
-		let i, listGroup="", listDegree="";
-		for(i = 0; i < allGroup.length; i++) {
-			listGroup = listGroup + '<option value="' + allGroup[i].url + '">' + allGroup[i].code + "/" + allGroup[i].degreeprogram + "</option>";
-			listDegree = listDegree + "<option>" + allGroup[i].degreeprogram + "</option>";
-		}
-		console.log(listGroup);
-		group.innerHTML = listGroup;
-		degree.innerHTML = listDegree;
-		curriculum_group.innerHTML = listGroup;
-	}
-
-	//Display all curriculums
-	function displayCurriculums(){
-		allCurriculums = getCurriculums();
-		console.log(allCurriculums);
-		let curriculums = document.getElementById("curriculums");
-		let course_curriculums = document.getElementById("course_curriculums");
-		let i, options="";
-		for(i = 0; i < allCurriculums.length; i++){
-			group = getGroup(allCurriculums[i].groupid);
-			options = options + '<option value="' + allCurriculums[i].url + '">'  + group.code + "/" + group.degreeprogram + "</option>";
-		}
-		console.log(options);
-		curriculums.innerHTML = options;
-		course_curriculums.innerHTML = options;
-	}
-
-	//Get all Curriculums
-	function getCurriculums(){
-		let request = new XMLHttpRequest();
-		request.open("GET", "http://127.0.0.1:8000/curriculums/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send();
-		allCurriculums = JSON.parse(request.responseText);
-		return allCurriculums;
-	}
-
-	//Get a specific group for link
-	function getGroup(url){
-		let request = new XMLHttpRequest();
-		request.open("GET", url, false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send();
-		group = JSON.parse(request.responseText);
-		return group;
-	}
-
-	function addCourse(){
-		let course_name = document.getElementById("course_name");
-		let course_code = document.getElementById("course_code");
-		let course_credit = document.getElementById("course_credit");
-		let course_curriculums = document.getElementById("course_curriculums");
-		let curriculum = course_curriculums.options[course_curriculums.selectedIndex].value;
-		let jsonData = '{"code":' + JSON.stringify(course_code.value) + ',"name":' + JSON.stringify(course_name.value) + ',"credit":' + course_credit.value + ',"curriculumid":' + JSON.stringify(curriculum) + '}';
-		console.log(jsonData);
-		let request = new XMLHttpRequest();
-		request.open("POST", "http://127.0.0.1:8000/courses/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send(jsonData);
-		let array = JSON.parse(request.responseText);
-		displayCourses();
-		console.log(array);
-	}
-
-	function addGroup(){
-		let group_code = document.getElementById("group_code");
-		let group_degree = document.getElementById("group_degree");
-		let jsonData = '{"code":' + JSON.stringify(group_code.value) + ',"degreeprogram":' + JSON.stringify(group_degree.value) + '}';
-		let request = new XMLHttpRequest();
-		request.open("POST", "http://127.0.0.1:8000/groupstudys/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send(jsonData);
-		let array = JSON.parse(request.responseText);
-		displayGroup();
-		console.log(array);
-	}
-
-	function addCurriculum(){
-		let curriculum_group = document.getElementById("curriculum_group");
-		let group = curriculum_group.options[curriculum_group.selectedIndex].value;
-		let jsonData = '{"groupid":' + JSON.stringify(group) + '}';
-		let request = new XMLHttpRequest();
-		request.open("POST", "http://127.0.0.1:8000/curriculums/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send(jsonData);
-		let array = JSON.parse(request.responseText);
-		displayCurriculums();
-		console.log(array);
-	}
-
-	//Read cookie for csrftoken
-	function readCookie(name) {
-		var nameEQ = encodeURIComponent(name) + "=";
-		var ca = document.cookie.split(';');
-		for (var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-			if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
-		}
-		return null;
-	}
-
-	displayCourses();
-	displayGroup();
-	displayCurriculums();
-	</script>
+		<div class="row">
+			<div class="panel-group">
+				<div class="panel panel-info col-lg-6">
+					<h2 class="panel-heading "> Add a new group. Also add new degreeprogram below. </h2>
+					<form class="panel-body form-group" id="add_group">
+						<label> Group Code: </label>
+						<input class="form-control" type="text" id="group_code"><br/>
+						<label> Group Degree Program: </label>
+						<input class="form-control" type="text" id="group_degree"><br/>
+						<button class="btn btn-success" type="button" onClick="addGroup()">Add Group</button><br>
+					</form>
+				</div>
+				<div class="panel panel-info col-lg-6">
+					<h2 class="panel-heading"> Add new curriculum for a group. You need to choose the group below. </h2>
+					<form class="panel-body form-group" sid="add_group">
+						<label> Group: </label>
+						<select class="form-control" id="curriculum_group"></select><br/>
+						<button class="btn btn-success" type="button" onClick="addCurriculum()">Add Group</button><br>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script src="script.js"></script>
+	</div>s
+	</body>
 <html>
