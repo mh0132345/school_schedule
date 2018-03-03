@@ -11,17 +11,19 @@ function displayCourses() {
 
 //Display all the group in groupstudys
 function displayGroup() {
-	let request = new XMLHttpRequest();
-	request.open("GET", "/groupstudys/", false);
-	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	request.send();
-	allGroup = JSON.parse(request.responseText);
+	allGroup = getAllGroup();
 	let group = document.getElementById("groups");
 	let degree = document.getElementById("degree");
 	let curriculum_group = document.getElementById("curriculum_group");
-	let i, listGroup="";
+	let group_by_degree = document.getElementById("list_group_by_degree");
+	let i, listGroup = "", listDegree = "";
+
+	let setDegree = new Set();
+	for(i = 0; i <allGroup.length; i++)
+		setDegree.add(allGroup[i].degreeprogram)
+	allDegree = Array.from(setDegree);
+	for(i = 0; i <allDegree.length; i++)
+		listDegree = listDegree + "<option>" + allDegree[i] + "</option>";
 
 	let tableGroup = "<thead><tr><th>ID</th><th>Code</th><th>Degree Program</th></thead><tbody>";
 	let tableDegree = "<thead><tr><th>ID</th><th>Degree Program</th></thead><tbody>";
@@ -35,6 +37,7 @@ function displayGroup() {
 	group.innerHTML = tableGroup;
 	degree.innerHTML = tableDegree;
 	curriculum_group.innerHTML = listGroup;
+	group_by_degree.innerHTML = listDegree;
 }
 
 //Display all curriculums
@@ -113,6 +116,44 @@ function coursesByStudent(){
 	courses.innerHTML = options;
 }
 
+function groupByDegree(){
+	allGroup = getAllGroup();
+	let group_by_degree = document.getElementById("list_group_by_degree");
+	let degree = group_by_degree.options[group_by_degree.selectedIndex].text;
+	let groups = document.getElementById("group_by_degree");
+	let i, options="";
+	for(i = 0; i <allGroup.length; i++)
+		if (allGroup[i].degreeprogram==degree)
+			options = options + '<li class="list-group-item">' + allGroup[i].code +'</li>'
+	groups.innerHTML = options;
+}
+
+function displayTeacherDegree() {
+	allTeacher = getTeacherDegree();
+	let teacher_by_degree = document.getElementById("list_teacher_by_degree");
+	let i, options="";
+	let degree = new Set();
+	for(i = 0; i <allTeacher.length; i++)
+		degree.add(allTeacher[i].degree)
+	degree = Array.from(degree);
+	for(i = 0; i <degree.length; i++){
+		options = options + '<option value="' + i + '">'  + degree[i] + "</option>";
+	}
+	teacher_by_degree.innerHTML = options;
+}
+
+function teacherByDegree(){
+	allTeacher = getTeacherDegree();
+	let teacher_by_degree = document.getElementById("list_teacher_by_degree");
+	let degree = teacher_by_degree.options[teacher_by_degree.selectedIndex].text;
+	let teachers = document.getElementById("teacher_by_degree");
+	let i, options="";
+	for(i = 0; i <allTeacher.length; i++)
+		if (allTeacher[i].degree==degree)
+			options = options + '<li class="list-group-item">' + allTeacher[i].teacherName +'</li>'
+	teachers.innerHTML = options;
+}
+
 //Search courses by teacher
 function getTeacherCourse() {
 	let request = new XMLHttpRequest();
@@ -137,6 +178,19 @@ function getStudentCourse() {
 	return allStudentCourse;
 }
 
+//Search teacher by degree
+function getTeacherDegree() {
+	let request = new XMLHttpRequest();
+	request.open("GET", "/teacherdegree/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send();
+	allTeacherDegree = JSON.parse(request.responseText);
+	return allTeacherDegree;
+}
+
+//Get all courses
 function getCourses() {
 	let request = new XMLHttpRequest();
 	request.open("GET", "/courses/", false);
@@ -147,6 +201,7 @@ function getCourses() {
 	allCourses = JSON.parse(request.responseText);
 	return allCourses;
 }
+
 //Get all Curriculums
 function getCurriculums(){
 	let request = new XMLHttpRequest();
@@ -157,6 +212,17 @@ function getCurriculums(){
 	request.send();
 	allCurriculums = JSON.parse(request.responseText);
 	return allCurriculums;
+}
+//Get all the group study
+function getAllGroup(){
+	let request = new XMLHttpRequest();
+	request.open("GET", "/groupstudys/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send();
+	allGroup = JSON.parse(request.responseText);
+	return allGroup;
 }
 
 //Get a specific group for link
@@ -246,3 +312,6 @@ displayTeacherCourse();
 coursesByTeacher();
 displayStudentCourse();
 coursesByStudent();
+groupByDegree();
+displayTeacherDegree();
+teacherByDegree();

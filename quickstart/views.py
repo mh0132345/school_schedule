@@ -66,3 +66,12 @@ def student_course(self):
     for row in rows:
         data.append({"course":row[0],"group":row[1]})
     return JsonResponse(data, safe=False)
+
+def teacher_degree(self):
+    with connection.cursor() as cursor:
+        cursor.execute("select distinct teacher.name, groupstudy.degreeprogram from (((teacher inner join teacher_implementation on teacher.id = teacherid)inner join implementation on implementationid = implementation.id) inner join groupstudy on implementation.group LIKE CONCAT('%', groupstudy.code ,'%'));")
+        rows = cursor.fetchall()
+    data = []
+    for row in rows:
+        data.append({"teacherName":row[0],"degree":row[1]})
+    return JsonResponse(data, safe=False)

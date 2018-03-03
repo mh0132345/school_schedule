@@ -19,13 +19,22 @@
 		    <ul class="nav navbar-nav">
 				<li><a href="#list1">List course/group</a></li>
 				<li><a href="#list2">List degree/curriculum</a></li>
-				<li><a href="#searchInfo">Search info</a></li>
+				<li class="dropdown">
+			    	<a class="dropdown-toggle" data-toggle="dropdown" href="#">Search info
+			    	<span class="caret"></span></a>
+			    	<ul class="dropdown-menu">
+			          <li><a href="#course_by_teacher">Search courses by teachers</a></li>
+			          <li><a href="#course_by_group">Search courses by group study</a></li>
+			          <li><a href="#group_by_degreeprogram">Search groups by degree program</a></li>
+			          <li><a href="#teacher_by_degreeprogram">Search teachers by degree program</a></li>
+			        </ul>
+			    </li>
 			</ul>
 		</div>
 	</nav>
-	<div class="container" style="margin-top:50px">
+	<div class="container" style="margin-top:100px">
 		<section id="list1">
-			<div class="row panel-group">
+			<div class="row">
 				<div class="panel panel-info col-lg-6">
 					<h1 class="panel-heading"> List of the courses: </h1>
 					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modelAddCourse">Add courses</button>
@@ -39,7 +48,7 @@
 			</div>
 		</section>
 		<section id="list2">
-			<div class="row panel-group">
+			<div class="row">
 				<div class="panel panel-info col-lg-6">
 					<h1 class="panel-heading"> List of the degree program: </h1>
 					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modelAddCurriculumAddGroup">Add Group/Degree</button>
@@ -72,7 +81,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-success" type="button" onClick="addCourse()">Add Course</button>
+					<button class="btn btn-success" type="button" onClick="addCourse()" data-dismiss="modal">Add Course</button>
           			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        			</div>
 			</div>
@@ -93,7 +102,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-success" type="button" onClick="addGroup()">Add Group</button>
+					<button class="btn btn-success" type="button" onClick="addGroup()" data-dismiss="modal">Add Group</button>
 				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        			</div>
 			</div>
@@ -112,29 +121,49 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-success" type="button" onClick="addCurriculum()">Add Curriculum</button>
+					<button class="btn btn-success" type="button" onClick="addCurriculum()" data-dismiss="modal">Add Curriculum</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        			</div>
 			</div>
 		</div>
 
-		<section id="searchInfo">
+		<section id="course_by_teacher">
 			<div class="row">
 				<div class="panel">
-					<h1 class="panel-heading"> Choose teacher to search for courses </h1>
+					<h2 class="panel-heading"> Teaching by teacher per year. Choose a teacher to search for courses. </h2>
 					<select class="form-control" id="teacher_course" onchange="coursesByTeacher()"></select>
 					<ul class="list-group" id="list_course_by_teacher"></ul>
 				</div>
 			</div>
+		</section>
+		<section id="course_by_group">
 			<div class="row">
 				<div class="panel">
-					<h1 class="panel-heading"> Choose student group to search for courses </h1>
+					<h2 class="panel-heading"> Learning by student group. Choose a student group to search for courses. </h2>
 					<select class="form-control" id="student_course" onchange="coursesByStudent()"></select>
 					<ul class="list-group" id="list_course_by_student"></ul>
 				</div>
 			</div>
 		</section>
-		<script src="script.js"></script>
+		<section id="group_by_degreeprogram">
+			<div class="row">
+				<div class="panel">
+					<h2 class="panel-heading"> Student groups by degree program. Choose a degree program to search for group. </h2>
+					<select class="form-control" id="list_group_by_degree" onchange="groupByDegree()"></select>
+					<ul class="list-group" id="group_by_degree"></ul>
+				</div>
+			</div>
+		</section>
+		<section id="teacher_by_degreeprogram">
+			<div class="row">
+				<div class="panel">
+					<h2 class="panel-heading"> Teachers by degree program. Choose a degree program to list all teachers. </h2>
+					<select class="form-control" id="list_teacher_by_degree" onchange="teacherByDegree()"></select>
+					<ul class="list-group" id="teacher_by_degree"></ul>
+				</div>
+			</div>
+		</section>
 	</div>
+	<script src="script.js"></script>
 	</body>
 <html>

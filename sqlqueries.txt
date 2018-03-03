@@ -1,18 +1,28 @@
 1.Teaching by teacher per year (latest year default) like in Excel -> List all course taught by teacher:
+
 select distinct teacher.name, course.name from (((teacher 
 inner join teacher_implementation on teacher.id = teacherid)
 inner join implementation on implementationid = implementation.id)
 inner join course on courseid = course.id);
 
 2.teaching by student group like in Excel (latest year default) -> List the courses which student groups need to learn 
+
 select course.name, implementation.group from implementation
 inner join course on courseid = course.id;
 
 Actually I don't understand the last 3 question below:
-3.
-select distinct(implementation.group) from implementation;
 
-4.
-select name from teacher
+3. Student groups by degree program
 
-5.
+select * from groupstudy;
+
+4. Teachers by degree program (teacher can teach in several degree programs)
+select distinct teacher.name, groupstudy.degreeprogram from (((teacher 
+
+inner join teacher_implementation on teacher.id = teacherid)
+
+inner join implementation on implementationid = implementation.id)
+
+inner join groupstudy on implementation.group LIKE CONCAT('%', groupstudy.code,'%'));
+
+5. I don't have data for per week, but I think it should be the same to per year.
