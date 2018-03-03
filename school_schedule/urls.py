@@ -36,4 +36,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^teachercourse/$', views.teacher_course, name='teacher_course'),
     url(r'^studentcourse/$', views.student_course, name='student_course'),
+    url(r'^teacherdegree/$', views.teacher_degree, name='teacher_degree'),
 ]
