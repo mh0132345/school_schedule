@@ -34,4 +34,6 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
+    url(r'^teachercourse/$', views.teacher_course, name='teacher_course'),
+    url(r'^studentcourse/$', views.student_course, name='student_course'),
 ]
