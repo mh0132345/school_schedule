@@ -4,83 +4,137 @@
 	 	<meta charset="UTF-8">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="style.css">
-
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 
 	<body>
-	<div class="container">
-		<div class="jumbotron">
-			<h1> SCHOOL SCHEDULE </h1>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+	    	<div class="navbar-header">
+	      		<a class="navbar-brand" href="#">School Schedule</a>
+	    	</div>
+		    <ul class="nav navbar-nav">
+				<li><a href="#list1">List course/group</a></li>
+				<li><a href="#list2">List degree/curriculum</a></li>
+				<li><a href="#searchInfo">Search info</a></li>
+			</ul>
 		</div>
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#">Home</a></li>
-			<li><a href="#">List all data</a></li>
-			<li><a href="#">Add new data</a></li>
-			<li><a href="#">Search infoss</a></li>
-		</ul>
-
-		<div class="row">
-			<div class="panel panel-info col-lg-6">
-				<h1 class="panel-heading"> List of the courses: </h1>
-				<select class="form-control" id="courses"></select>
-			</div>
-			<div class="panel panel-info  col-lg-6">
-				<h1 class="panel-heading"> List of the groups: </h1>
-				<select class="form-control" id="groups"></select>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="panel panel-info col-lg-6">
-				<h1 class="panel-heading"> List of the degree program: </h1>
-				<select class="form-control" id="degree"></select>
-			</div>
-			<div class="panel panel-info col-lg-6">
-				<h1 class="panel-heading"> List of the curriculums: </h1>
-				<select class="form-control" id="curriculums"></select>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="panel panel-info">
-				<h2 class="panel-heading "> Add a new courses here. You will need to choose a curriculums below. </h2>
-				<form class="form-group panel-body" id="add_course">
-					<label>Course Code:</label>
-					<input class="form-control" type="text" id="course_code"><br/>
-					<label>Course Name:</label>
-					<input class="form-control" type="text" id="course_name"><br/>
-					<label>Course Credit:</label>
-					<input class="form-control" type="number" id="course_credit"><br/>
-					<label> Course Curriculums:</label>
-					<select class="form-control" id="course_curriculums"></select><br/>
-					<button class="btn btn-success" type="button" onClick="addCourse()">Add Course</button><br>
-				</form>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="panel-group">
+	</nav>
+	<div class="container" style="margin-top:50px">
+		<section id="list1">
+			<div class="row panel-group">
 				<div class="panel panel-info col-lg-6">
-					<h2 class="panel-heading "> Add a new group. Also add new degreeprogram below. </h2>
-					<form class="panel-body form-group" id="add_group">
+					<h1 class="panel-heading"> List of the courses: </h1>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modelAddCourse">Add courses</button>
+					<table class="table" id="courses"></table>
+				</div>
+				<div class="panel panel-info  col-lg-6">
+					<h1 class="panel-heading"> List of the groups: </h1>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modelAddGroup">Add Group/Degree</button>
+					<table class="table" id="groups"></table>
+				</div>
+			</div>
+		</section>
+		<section id="list2">
+			<div class="row panel-group">
+				<div class="panel panel-info col-lg-6">
+					<h1 class="panel-heading"> List of the degree program: </h1>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modelAddCurriculumAddGroup">Add Group/Degree</button>
+					<table class="table" id="degree"></table>
+				</div>
+				<div class="panel panel-info col-lg-6">
+					<h1 class="panel-heading"> List of the curriculums: </h1>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modelAddCurriculum">Add Curriculum</button>
+					<table class="table" id="curriculums"></table>
+				</div>
+			</div>
+		</section>
+
+		<div id="modelAddCourse" class="modal fade">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2> Add a new courses here. You will need to choose a curriculums below. </h2>
+				</div>
+				<div class="modal-body">
+					<form class="form-group" id="add_course">
+						<label>Course Code:</label>
+						<input class="form-control" type="text" id="course_code"><br/>
+						<label>Course Name:</label>
+						<input class="form-control" type="text" id="course_name"><br/>
+						<label>Course Credit:</label>
+						<input class="form-control" type="number" id="course_credit"><br/>
+						<label> Course Curriculums:</label>
+						<select class="form-control" id="course_curriculums"></select><br/>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-success" type="button" onClick="addCourse()">Add Course</button>
+          			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       			</div>
+			</div>
+		</div>
+
+		<div id="modelAddGroup" class="modal fade">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2> Add a new group. Also add new degreeprogram below. </h2>
+				</div>
+				<div class="modal-body">
+					<form class=" form-group" id="add_group">
 						<label> Group Code: </label>
 						<input class="form-control" type="text" id="group_code"><br/>
 						<label> Group Degree Program: </label>
 						<input class="form-control" type="text" id="group_degree"><br/>
-						<button class="btn btn-success" type="button" onClick="addGroup()">Add Group</button><br>
 					</form>
 				</div>
-				<div class="panel panel-info col-lg-6">
-					<h2 class="panel-heading"> Add new curriculum for a group. You need to choose the group below. </h2>
+				<div class="modal-footer">
+					<button class="btn btn-success" type="button" onClick="addGroup()">Add Group</button>
+				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       			</div>
+			</div>
+		</div>
+
+		<div id="modelAddCurriculum" class="modal fade">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2> Add new curriculum for a group. You need to choose the group below. </h2>
+				</div>
+				<div class="modal-body">
 					<form class="panel-body form-group" sid="add_group">
 						<label> Group: </label>
 						<select class="form-control" id="curriculum_group"></select><br/>
-						<button class="btn btn-success" type="button" onClick="addCurriculum()">Add Group</button><br>
 					</form>
 				</div>
+				<div class="modal-footer">
+					<button class="btn btn-success" type="button" onClick="addCurriculum()">Add Curriculum</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       			</div>
 			</div>
 		</div>
+
+		<section id="searchInfo">
+			<div class="row">
+				<div class="panel">
+					<h1 class="panel-heading"> Choose teacher to search for courses </h1>
+					<select class="form-control" id="teacher_course" onchange="coursesByTeacher()"></select>
+					<ul class="list-group" id="list_course_by_teacher"></ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="panel">
+					<h1 class="panel-heading"> Choose student group to search for courses </h1>
+					<select class="form-control" id="student_course" onchange="coursesByStudent()"></select>
+					<ul class="list-group" id="list_course_by_student"></ul>
+				</div>
+			</div>
+		</section>
 		<script src="script.js"></script>
-	</div>s
+	</div>
 	</body>
 <html>
